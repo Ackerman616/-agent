@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>同行 · 多人共识旅行 Agent</title>
+  <style>
+    :root { --ink:#172033; --muted:#667085; --line:#dfe5ef; --soft:#f5f7fb; --blue:#246bfd; --blue2:#eaf0ff; --green:#08775a; --green2:#e6f7f0; --orange:#a9581d; --orange2:#fff2e8; --red:#a92e3b; --red2:#fff0f2; --paper:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#f3f5f9; font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif; }
+    button,input,select,textarea { font:inherit; }
+    button { cursor:pointer; }
+    input,select,textarea { width:100%; padding:9px 10px; border:1px solid #d4dae6; border-radius:9px; outline:none; background:#fff; color:var(--ink); }
+    textarea { min-height:58px; resize:vertical; }
+    .top { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.96); border-bottom:1px solid var(--line); }
+    .topin { max-width:1220px; margin:auto; padding:13px 22px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+    .brand { display:flex; align-items:center; gap:11px; }
+    .logo { width:39px; height:39px; border-radius:12px; background:var(--blue); color:#fff; display:grid; place-items:center; font-weight:800; }
+    h1 { font-size:17px; margin:0; } .brand p { margin:3px 0 0; font-size:11px; color:var(--muted); }
+    .health { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+    .pill { border-radius:999px; border:1px solid var(--line); padding:6px 9px; font-size:10px; color:var(--muted); background:white; }
+    .pill.ok { background:var(--green2); color:var(--green); border-color:#b5dfd1; }
+    .pill.bad { background:var(--red2); color:var(--red); border-color:#f2c3c9; }
+    .layout { max-width:1220px; margin:auto; padding:22px; display:grid; grid-template-columns:390px minmax(0,1fr); gap:18px; align-items:start; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:16px; }
+    .setup { position:sticky; top:87px; overflow:hidden; }
+    .head { padding:18px 19px 13px; border-bottom:1px solid var(--line); }
+    .head h2,.section h2 { margin:0; font-size:15px; }
+    .head p,.section-sub { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.55; }
+    .form { padding:16px 19px 20px; max-height:calc(100vh - 150px); overflow:auto; }
+    .title { font-size:11px; font-weight:700; color:#344054; margin:16px 0 8px; }
+    .title:first-child { margin-top:0; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    label { display:grid; gap:5px; color:var(--muted); font-size:10px; }
+    .member { padding:12px; border:1px solid var(--line); border-radius:12px; margin-bottom:9px; }
+    .member-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+    .member-title input { width:140px; font-weight:700; padding:6px 8px; }
+    .checks { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:8px; }
+    .check { display:flex; align-items:center; gap:6px; padding:6px; border:1px solid var(--line); border-radius:7px; font-size:10px; color:#475467; }
+    .check input { width:13px; margin:0; padding:0; }
+    .member-actions { display:flex; gap:7px; }
+    .secondary,.remove-member { border:1px solid var(--line); border-radius:8px; background:#fff; color:#475467; padding:7px 10px; font-size:10px; }
+    .remove-member { color:var(--red); padding:5px 8px; }
+    .run { width:100%; border:0; border-radius:11px; padding:12px; background:var(--blue); color:#fff; font-weight:700; margin-top:12px; }
+    .run:disabled { opacity:.55; cursor:wait; }
+    .workspace { min-width:0; display:grid; gap:16px; }
+    .hero { padding:24px; }
+    .eyebrow { display:inline-block; padding:6px 9px; border-radius:999px; background:var(--blue2); color:var(--blue); font-size:10px; font-weight:700; }
+    .hero h2 { margin:14px 0 8px; font-size:26px; line-height:1.25; }
+    .hero p { margin:0; max-width:720px; color:var(--muted); font-size:12px; line-height:1.7; }
+    .contract { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:17px; }
+    .contract div { background:var(--soft); border-radius:9px; padding:9px; font-size:10px; color:#475467; }
+    .section { padding:19px; }
+    .events { display:grid; gap:8px; margin-top:13px; max-height:420px; overflow:auto; }
+    .event { display:grid; grid-template-columns:86px 1fr; gap:9px; padding:10px; border:1px solid var(--line); border-radius:10px; background:#fbfcfe; }
+    .event-kind { font-size:9px; font-weight:800; color:var(--blue); text-transform:uppercase; padding-top:2px; }
+    .event-body { font-size:10px; color:#475467; line-height:1.55; word-break:break-word; }
+    .event.error { border-color:#f1c2c8; background:var(--red2); }
+    .event.success { border-color:#bae3d5; background:var(--green2); }
+    .empty { color:var(--muted); font-size:11px; padding:24px 8px; text-align:center; }
+    .result { display:none; } .result.active { display:block; }
+    .result-top { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; }
+    .result-title { margin:0; font-size:18px; } .result-summary { color:var(--muted); font-size:11px; line-height:1.6; margin-top:5px; }
+    .candidate-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0; }
+    .candidate-card { text-align:left; border:1px solid var(--line); border-radius:12px; padding:12px; background:#fff; color:var(--ink); }
+    .candidate-card.active { border-color:var(--blue); box-shadow:0 0 0 3px rgba(36,107,253,.1); background:var(--blue2); }
+    .candidate-card strong { display:block; font-size:12px; margin:5px 0; }
+    .candidate-card p { margin:0; color:var(--muted); font-size:9px; line-height:1.45; }
+    .candidate-type { color:var(--blue); font-size:9px; font-weight:700; }
+    .candidate-status { display:inline-block; margin-top:8px; font-size:9px; color:var(--green); }
+    .candidate-status.bad { color:var(--red); }
+    .issues { display:none; margin:0 0 14px; padding:11px; border-radius:10px; background:var(--red2); color:var(--red); font-size:10px; line-height:1.6; }
+    .issues.active { display:block; }
+    .vote-panel { margin:0 0 15px; padding:13px; border:1px solid var(--line); border-radius:12px; background:var(--soft); }
+    .vote-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .vote-head b { font-size:11px; } .vote-head span { color:var(--muted); font-size:9px; }
+    .vote-form { display:grid; grid-template-columns:150px 1fr auto; gap:9px; align-items:center; margin-top:10px; }
+    .vote-options { display:flex; gap:6px; flex-wrap:wrap; }
+    .vote-option { display:flex; align-items:center; gap:5px; padding:7px 8px; border:1px solid var(--line); border-radius:8px; background:#fff; color:#475467; font-size:9px; }
+    .vote-option input { width:13px; margin:0; }
+    .vote-submit { border:0; border-radius:8px; padding:9px 12px; background:var(--blue); color:#fff; font-size:10px; font-weight:700; }
+    .vote-submit:disabled { opacity:.5; cursor:not-allowed; }
+    .vote-result { margin-top:9px; color:var(--muted); font-size:9px; line-height:1.6; }
+    .metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:15px 0; }
+    .metric { background:var(--soft); border-radius:9px; padding:10px; }
+    .metric span { display:block; font-size:9px; color:var(--muted); }
+    .metric b { font-size:14px; }
+    .days { display:grid; gap:11px; }
+    .day { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+    .dayhead { padding:10px 12px; background:#f8f9fc; display:flex; justify-content:space-between; align-items:center; }
+    .dayhead b { font-size:12px; } .dayhead span { font-size:9px; color:var(--muted); }
+    .timeline { padding:4px 12px 10px; }
+    .stop { display:grid; grid-template-columns:72px 1fr; gap:10px; padding:11px 0; border-bottom:1px dashed var(--line); }
+    .stop:last-child { border:0; } .stop-time { color:var(--muted); font-size:9px; }
+    .stop b { display:block; font-size:11px; margin-bottom:4px; }
+    .stop p { margin:0; color:var(--muted); font-size:9px; line-height:1.5; }
+    .tradeoffs,.evidence { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+    .smallcard { border:1px solid var(--line); border-radius:10px; padding:10px; font-size:9px; line-height:1.55; color:#475467; }
+    .smallcard b { display:block; font-size:10px; color:var(--ink); margin-bottom:4px; }
+    .blocked { margin-top:12px; padding:12px; border-radius:10px; background:var(--red2); color:var(--red); font-size:10px; line-height:1.55; display:none; }
+    .blocked.active { display:block; }
+    @media(max-width:900px){ .layout{grid-template-columns:1fr}.setup{position:static}.form{max-height:none}.contract,.candidate-grid,.metrics,.tradeoffs,.evidence{grid-template-columns:1fr 1fr} }
+    @media(max-width:560px){ .contract,.candidate-grid,.metrics,.tradeoffs,.evidence{grid-template-columns:1fr}.vote-form{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="topin">
+      <div class="brand">
+        <div class="logo">同</div>
+        <div><h1>同行 · 多人共识旅行 Agent</h1><p>FastAPI 后端 × MySQL 持久化 × LLM × 腾讯地图</p></div>
+      </div>
+      <div class="health"><span id="runtimePill" class="pill">检查后端</span><span id="modelPill" class="pill">API</span><span id="mapPill" class="pill">任务</span></div>
+    </div>
+  </header>
+  <main class="layout">
+    <aside class="card setup">
+      <div class="head"><h2>发起一次多人旅行</h2><p>前端通过 REST API 调用独立 FastAPI 后端。</p></div>
+      <div class="form">
+        <div class="title">后端地址</div>
+        <label>API Base<input id="apiBase" value="http://127.0.0.1:8000/api/v1"></label>
+        <div class="title">旅行边界</div>
+        <div class="grid2">
+          <label>目的地<input id="destination" value="北京"></label>
+          <label>出发点<input id="origin" value="北京南站"></label>
+          <label>开始时间<input id="startAt" type="datetime-local" value="2026-10-17T09:30"></label>
+          <label>返程截止<input id="deadline" type="time" value="18:00"></label>
+        </div>
+        <div class="title">同行成员</div>
+        <div id="members"></div>
+        <div class="member-actions"><button id="addMemberBtn" class="secondary" type="button">添加成员</button></div>
+        <button id="runBtn" class="run">创建旅行并异步生成方案</button>
+        <div id="blocked" class="blocked"></div>
+      </div>
+    </aside>
+    <section class="workspace">
+      <div class="card hero">
+        <span class="eyebrow">Agent contract</span>
+        <h2>先保存旅行，再异步生成候选方案，最后通过成员投票收敛。</h2>
+        <p>前端不再调用 Node 接口，而是连接独立 Python FastAPI 服务。方案、投票、最终结果都写入 MySQL。</p>
+        <div class="contract"><div>创建旅行</div><div>异步任务</div><div>方案投票</div><div>最终收敛</div></div>
+      </div>
+      <div class="card section"><h2>执行日志</h2><p class="section-sub">展示真实 REST 请求、任务状态和错误码。</p><div id="events" class="events"><div class="empty">运行后将在这里看到 API 调用过程。</div></div></div>
+      <div id="result" class="card section result">
+        <div class="result-top"><div><h2 id="resultTitle" class="result-title"></h2><div id="resultSummary" class="result-summary"></div></div><span id="sessionPill" class="pill ok"></span></div>
+        <div id="candidateGrid" class="candidate-grid"></div>
+        <div id="votePanel" class="vote-panel"></div>
+        <div id="metrics" class="metrics"></div>
+        <div id="constraintIssues" class="issues"></div>
+        <div id="days" class="days"></div>
+        <h2 style="margin-top:18px">成员取舍</h2><div id="tradeoffs" class="tradeoffs"></div>
+        <h2 style="margin-top:18px">工具证据</h2><div id="evidence" class="evidence"></div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/api.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

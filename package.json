@@ -1,0 +1,15 @@
+{
+  "name": "consensus-travel-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "check": "node --check server.mjs && node --check test-agent.mjs && node --check evaluation/evaluate.mjs",
+    "test:agent": "node test-agent.mjs",
+    "eval": "node evaluation/evaluate.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

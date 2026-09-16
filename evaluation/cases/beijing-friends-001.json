@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "id": "beijing-friends-001",
+  "title": "北京朋友结伴游：高密度打卡、低预算与低步行冲突",
+  "source": "用户提供的真实感场景（成员使用化名）",
+  "created_at": "2026-09-04",
+  "trip": {
+    "destination": "北京市区",
+    "origin": "北京南站",
+    "start_at": "2026-10-17T10:00",
+    "days": 2,
+    "nights": 1,
+    "return_deadline": "18:00",
+    "return_date": "2026-10-18",
+    "participation_policy": {
+      "default": "shared",
+      "branch_allowed": true,
+      "branch_requires_confirmation": true,
+      "description": "默认希望全员同行；若与他人硬约束冲突，可转换为个人或分组支线，但必须先由相关成员确认。"
+    },
+    "members": [
+      {
+        "id": "member-a",
+        "name": "小林",
+        "budget_max": 1800,
+        "pace": "intensive",
+        "walking_limit_km": 15,
+        "accepts_early_start": true,
+        "earliest_start": "07:00",
+        "latest_end": "22:30",
+        "interests": ["culture", "photo", "high_density"],
+        "must_visit": ["故宫博物院", "景山公园", "天坛公园", "什刹海"],
+        "forbidden": ["大型商场购物", "因节奏慢而取消核心景点"],
+        "dietary_rules": {
+          "notes": ["无过敏", "可以吃辣", "不吃动物内脏"],
+          "forbidden_keywords": ["动物内脏", "内脏", "卤煮"]
+        },
+        "soft_preferences": {
+          "high": [
+            { "label": "历史文化", "tags": ["culture", "history"] },
+            { "label": "胡同拍照", "tags": ["hutong", "photo"] },
+            { "label": "高密度景点打卡", "tags": ["high_density"] }
+          ],
+          "medium": [
+            { "label": "北京特色美食", "tags": ["food"] },
+            { "label": "城市夜景", "tags": ["night"] },
+            { "label": "公园散步", "tags": ["nature", "park"] }
+          ],
+          "low": ["购物", "长时间休息"]
+        },
+        "additional_notes": "第一次来北京，希望尽量多看核心景点；理想状态每天5至7个节点，午餐可简单解决，也愿意为节省时间多打车。"
+      },
+      {
+        "id": "member-b",
+        "name": "阿哲",
+        "budget_max": 800,
+        "pace": "relaxed",
+        "walking_limit_km": 4,
+        "accepts_early_start": false,
+        "earliest_start": "10:00",
+        "latest_end": "20:30",
+        "interests": ["food", "relax", "night"],
+        "must_visit": ["什刹海或后海区域", "人均80元以内的北京特色餐饮"],
+        "forbidden": ["早起看升旗或日出", "特种兵式赶景点", "连续安排两个以上大型景点", "单日步行超过4公里", "单次打车费用超过30元"],
+        "dietary_rules": {
+          "notes": ["不能吃太辣", "不吃香菜", "海鲜轻微过敏"],
+          "forbidden_keywords": ["重辣", "特辣", "香菜", "海鲜", "虾", "蟹", "贝类"]
+        },
+        "soft_preferences": {
+          "high": [
+            { "label": "北京特色美食", "tags": ["food"] },
+            { "label": "咖啡馆或长时间休息", "tags": ["cafe", "relax"] },
+            { "label": "轻松的城市夜景", "tags": ["night", "relax"] }
+          ],
+          "medium": [
+            { "label": "胡同漫步", "tags": ["hutong"] },
+            { "label": "一个代表性历史景点", "tags": ["culture", "history"] },
+            { "label": "公园或湖边散步", "tags": ["nature", "park", "lake"] }
+          ],
+          "low": ["深度参观博物馆", "高频景点打卡", "早起行程"]
+        },
+        "additional_notes": "每天最多3至4个主要节点；午餐至少留出90分钟；若行程过密，可以接受与其他成员短时间分开行动。",
+        "rules": {
+          "max_major_nodes_per_day": 4,
+          "lunch_break_min": 90,
+          "max_taxi_fare_per_ride": 30
+        }
+      },
+      {
+        "id": "member-c",
+        "name": "小雨",
+        "budget_max": 1200,
+        "pace": "balanced",
+        "walking_limit_km": 7,
+        "accepts_early_start": true,
+        "earliest_start": "09:00",
+        "latest_end": "20:00",
+        "interests": ["culture", "nature", "night"],
+        "must_visit": ["天坛公园", "至少一个自然景观或城市公园"],
+        "forbidden": ["酒吧街和高消费夜生活", "太晚返程", "频繁跨城区往返", "连续乘车超过1小时", "为增加景点数量而压缩正常用餐时间"],
+        "dietary_rules": {
+          "notes": ["不吃生食", "不吃过甜食品", "无其他过敏"],
+          "forbidden_keywords": ["生食", "刺身", "生腌", "超甜", "高糖甜品"]
+        },
+        "soft_preferences": {
+          "high": [
+            { "label": "历史文化", "tags": ["culture", "history"] },
+            { "label": "自然景观", "tags": ["nature", "park", "lake"] },
+            { "label": "城市夜景", "tags": ["night"] }
+          ],
+          "medium": [
+            { "label": "胡同拍照", "tags": ["hutong", "photo"] },
+            { "label": "北京特色美食", "tags": ["food"] },
+            { "label": "咖啡馆休息", "tags": ["cafe", "relax"] }
+          ],
+          "low": ["购物", "网红店排队", "纯商业街打卡"]
+        },
+        "additional_notes": "希望丰富但不过度赶路，每天4至5个节点；第二天必须18:00前回到北京南站。",
+        "rules": {
+          "max_continuous_transport_min": 60
+        }
+      }
+    ]
+  },
+  "expected_product_behavior": {
+    "candidate_count": 3,
+    "candidate_strategy": "mixed",
+    "required_candidate_types": ["balanced", "conflict_driven", "conflict_driven"],
+    "voting": {
+      "min_choices_per_member": 1,
+      "max_choices_per_member": 2,
+      "tie_breakers": ["fairness_floor", "hard_constraint_pass_rate", "average_satisfaction", "organizer_decision"]
+    },
+    "consensus_policy": {
+      "hard_constraints": "veto",
+      "soft_preferences": "approval_vote",
+      "tie_breaker": "max_min_fairness"
+    },
+    "infeasible_policy": "提供2至3个放宽方向，相关成员确认后再规划，不得自动放宽硬约束。",
+    "expected_conflicts": [
+      { "id": "pace_density", "label": "行程密度冲突", "keywords": ["密度", "节奏", "节点", "特种兵"] },
+      { "id": "start_time", "label": "出发时间冲突", "keywords": ["出发", "早起", "10:00"] },
+      { "id": "walking", "label": "步行能力冲突", "keywords": ["步行", "体力", "4公里", "4km"] },
+      { "id": "budget", "label": "预算冲突", "keywords": ["预算", "800"] },
+      { "id": "must_visit", "label": "必去地点与共同活动冲突", "keywords": ["必去", "故宫", "支线", "分组"] },
+      { "id": "end_time", "label": "夜间结束时间冲突", "keywords": ["结束", "夜间", "20:00", "返程"] }
+    ]
+  },
+  "manual_review": [
+    "三个候选方案是否具有真实、清晰且可比较的差异",
+    "冲突解释是否准确表达了谁获益、谁妥协以及原因",
+    "分组支线是否获得相关成员确认，而不是由系统单方面决定",
+    "餐饮建议是否能实际满足全部忌口与过敏限制",
+    "景点营业、预约与票价信息是否注明来源和查询时间",
+    "成员是否愿意投票选择至少一个候选方案"
+  ]
+}

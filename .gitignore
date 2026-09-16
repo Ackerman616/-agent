@@ -1,0 +1,4 @@
+.env
+data/sessions.json
+data/test-run.ndjson
+data/evaluation-report.json
